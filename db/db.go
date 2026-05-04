@@ -21,3 +21,7 @@ func (v *DB) Get(key string) (string, bool) {
 	}
 	return val, true
 }
+
+func (v *DB) Del(key string) {
+	delete(v.data, key)
+}

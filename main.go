@@ -9,6 +9,7 @@ import (
 func main() {
 	b := *db.NewDB()
 	b.Set("name", "sam")
+	b.Del("name")
 
 	val, ok := b.Get("name")
 	if !ok {
