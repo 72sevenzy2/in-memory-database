@@ -1,4 +1,4 @@
-package main
+package db
 
 import (
 	"fmt"
@@ -24,8 +24,4 @@ func (v *DB) Get(key string) (string, bool) {
 		return "", false
 	}
 	return val, true
-}
-
-func main() {
-	fmt.Println("#")
 }
