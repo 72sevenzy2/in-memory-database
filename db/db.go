@@ -1,10 +1,12 @@
 package db
 
+
+// core logic
 type DB struct {
 	data map[string]string
 }
 
-func NewDB() *DB {
+func NewDB() *DB { // initialise a new map to hold data
 	return &DB{
 		data: make(map[string]string),
 	}
@@ -23,5 +25,6 @@ func (v *DB) Get(key string) (string, bool) {
 }
 
 func (v *DB) Del(key string) {
-	delete(v.data, key)
+	delete(v.data, key) // built in delete() func to delete a particular key being held in the db map.
 }
+
