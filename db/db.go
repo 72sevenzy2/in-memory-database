@@ -1,9 +1,5 @@
 package db
 
-import (
-	"fmt"
-)
-
 type DB struct {
 	data map[string]string
 }
