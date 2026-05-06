@@ -9,23 +9,34 @@ import (
 	"github.com/72sevenzy2/in-memory-database/db"
 )
 
+// cli usage
+
 func main() {
 	b := db.NewDB()
 
 	scanner := bufio.NewScanner(os.Stdin)
+	for {
+		fmt.Println("> ")
+		scanner.Scan()
 
-	parts := strings.Split(scanner.Text(), " ")
+		input := scanner.Text()
+		parts := strings.Split(input, " ")
 
-	switch parts[0] {
-	case "SET":
-		b.Set(parts[1], parts[2])
+		switch parts[0] {
+		case "SET":
+			b.Set(parts[1], parts[2])
+			fmt.Println("successful")
 
-	case "GET":
-		val, ok := b.Get(parts[1])
-		if ok {
+		case "GET":
+			val, ok := b.Get(parts[1])
+			if !ok {
+				fmt.Println("key does not exist")
+			}
 			fmt.Println(val)
-		} else {
-			fmt.Println("key not found")
+
+		case "EXIT":
+			fmt.Println("exited program")
+			return
 		}
 	}
 }
