@@ -3,4 +3,4 @@
 A quick and easy to use k-v database I made for myself for projects.
 
 - Includes cli support.
-- persistant input/error handling.
+- persistant input/error handling for edge cases.
