@@ -1,5 +1,8 @@
 package db
 
+import (
+	
+)
 
 // core logic
 type DB struct {
@@ -12,8 +15,10 @@ func NewDB() *DB { // initialise a new map to hold data
 	}
 }
 
-func (v *DB) Set(key string, value string) {
+func (v *DB) Set(key string, value string) error {
 	v.data[key] = value
+
+	return nil
 }
 
 func (v *DB) Get(key string) (string, bool) {
@@ -27,4 +32,3 @@ func (v *DB) Get(key string) (string, bool) {
 func (v *DB) Del(key string) {
 	delete(v.data, key) // built in delete() func to delete a particular key being held in the db map.
 }
-

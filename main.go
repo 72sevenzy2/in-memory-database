@@ -11,7 +11,7 @@ import (
 
 // cli usage
 
-// reusable func to display input format (SET and GET)
+// reusable functions to display input format (SET and GET)
 
 func displaySet() {
 	fmt.Println("usage: SET <KeyName> <value>")
