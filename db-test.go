@@ -7,10 +7,10 @@ import (
 
 func TestDb() {
 	b := *db.NewDB()
-	b.Set("name", "sam")
+	b.SetInt("name", 100000)
 	b.Del("name")
 
-	val, ok := b.Get("name")
+	val, ok := b.GetInt("name")
 	if !ok {
 		fmt.Println("not found", val)
 	}
