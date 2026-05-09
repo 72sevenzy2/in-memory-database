@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 
 	"github.com/72sevenzy2/in-memory-database/db"
@@ -50,7 +51,14 @@ func main() {
 				continue
 			}
 
-			b.Set(parts[1], parts[2])
+			// parse the string given to type uint first
+			f, err := strconv.ParseUint(parts[1], 10, 32)
+			if err != nil {
+				fmt.Println("invalid number")
+				continue
+			}
+
+			b.SetInt(parts[1], uint32(f)) // then convert uint type to uint32
 			fmt.Println("successful")
 		case "GET":
 			if len(parts) < 2 {
@@ -59,7 +67,7 @@ func main() {
 				continue
 			}
 
-			val, ok := b.Get(parts[1])
+			val, ok := b.GetInt(parts[1])
 			if !ok {
 				fmt.Println("key does not exist")
 			} else {
@@ -70,7 +78,7 @@ func main() {
 				fmt.Println("invalid format, usage: DEL <KeyName>")
 				continue
 			}
-			if _, ok := b.Get(parts[1]); ok {
+			if _, ok := b.GetInt(parts[1]); ok {
 				b.Del(parts[1])
 				fmt.Println("successfully deleted key")
 			} else {
