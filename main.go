@@ -8,23 +8,10 @@ import (
 	"strings"
 
 	"github.com/72sevenzy2/in-memory-database/db"
+	"github.com/72sevenzy2/in-memory-database/internal"
 )
 
 // cli usage
-
-// reusable functions to display input format (SET and GET)
-
-func displaySet() {
-	fmt.Println("usage: SET <KeyName> <value>")
-}
-
-func displayGet() {
-	fmt.Println("usage: GET <KeyName>")
-}
-
-func displayDel() {
-	fmt.Println("usage: DEL <KeyName>")
-}
 
 func main() {
 	b := db.NewDB()
@@ -47,7 +34,7 @@ func main() {
 		case "SET":
 			if len(parts) < 3 {
 				fmt.Println("invalid SET format:")
-				displaySet()
+				internal.DisplaySet()
 				continue
 			}
 
@@ -63,7 +50,7 @@ func main() {
 		case "GET":
 			if len(parts) < 2 {
 				fmt.Println("invalid GET format:")
-				displayGet()
+				internal.DisplayGet()
 				continue
 			}
 
@@ -75,7 +62,7 @@ func main() {
 			}
 		case "DEL":
 			if len(parts) < 2 {
-				fmt.Println("invalid format, usage: DEL <KeyName>")
+				internal.DisplayDel()
 				continue
 			}
 			if _, ok := b.GetInt(parts[1]); ok {
@@ -86,9 +73,9 @@ func main() {
 			}
 		case "HELP":
 			fmt.Println("General usage:")
-			displayGet()
-			displaySet()
-			displayDel()
+			internal.DisplayGet()
+			internal.DisplaySet()
+			internal.DisplayDel()
 
 			fmt.Println("\nTo exit: run <EXIT>")
 		case "EXIT":
