@@ -21,6 +21,10 @@ func displayGet() {
 	fmt.Println("usage: GET <KeyName>")
 }
 
+func displayDel() {
+	fmt.Println("usage: DEL <KeyName>")
+}
+
 func main() {
 	b := db.NewDB()
 
@@ -61,6 +65,24 @@ func main() {
 			} else {
 				fmt.Println(val)
 			}
+		case "DEL":
+			if len(parts) < 2 {
+				fmt.Println("invalid format, usage: DEL <KeyName>")
+				continue
+			}
+			if _, ok := b.Get(parts[1]); ok {
+				b.Del(parts[1])
+				fmt.Println("successfully deleted key")
+			} else {
+				fmt.Println("key does not exist:", parts[1])
+			}
+		case "HELP":
+			fmt.Println("General usage:")
+			displayGet()
+			displaySet()
+			displayDel()
+
+			fmt.Println("\nTo exit: run <EXIT>")
 		case "EXIT":
 			fmt.Println("exited program")
 			return
