@@ -1,34 +1,40 @@
 package db
 
 import (
-	
+	"encoding/binary"
 )
 
 // core logic
 type DB struct {
-	data map[string]string
+	data map[string][]byte
 }
 
 func NewDB() *DB { // initialise a new map to hold data
 	return &DB{
-		data: make(map[string]string),
+		data: make(map[string][]byte),
 	}
 }
 
-func (v *DB) Set(key string, value string) error {
-	v.data[key] = value
+func (v *DB) SetInt(key string, value uint32) error {
+	buf := make([]byte, 4)
 
+	binary.LittleEndian.PutUint32(buf, value)
+
+	v.data[key] = buf
 	return nil
 }
 
-func (v *DB) Get(key string) (string, bool) {
-	val, ok := v.data[key]
+func (v *DB) GetInt(key string) (uint32, bool) {
+	data, ok := v.data[key]
 	if !ok {
-		return "", false
+		return 0, false
 	}
-	return val, true
+
+	value := binary.LittleEndian.Uint32(data)
+	return value, true
 }
 
+// this will stay fixed as key will always be type string
 func (v *DB) Del(key string) {
 	delete(v.data, key) // built in delete() func to delete a particular key being held in the db map.
 }
