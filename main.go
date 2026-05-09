@@ -52,7 +52,7 @@ func main() {
 			}
 
 			// parse the string given to type uint first
-			f, err := strconv.ParseUint(parts[1], 10, 32)
+			f, err := strconv.ParseUint(parts[2], 10, 32)
 			if err != nil {
 				fmt.Println("invalid number")
 				continue
