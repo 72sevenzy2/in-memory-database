@@ -34,6 +34,16 @@ func (v *DB) GetInt(key string) (uint32, bool) {
 	return value, true
 }
 
+// func to retrieve all values at once
+func (v *DB) GetAllInt() map[string]uint32 {
+	result := make(map[string]uint32)
+
+	for k, v := range v.data {
+		result[k] = binary.LittleEndian.Uint32(v) // serialize into uint32 type before assigning
+	}
+	return result
+}
+
 // this will stay fixed as key will always be type string
 func (v *DB) Del(key string) {
 	delete(v.data, key) // built in delete() func to delete a particular key being held in the db map.
