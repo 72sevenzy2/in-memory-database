@@ -25,4 +25,13 @@ func TestString(t *testing.T) {
 	} else {
 		fmt.Println(val, val2)
 	}
+
+	res, ex := d.GetAllString()
+	if !ex {
+		fmt.Println("no data exists")
+	}
+
+	for k, v := range res {
+		fmt.Println(k, v)
+	}
 }
