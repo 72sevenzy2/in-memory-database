@@ -14,7 +14,7 @@ func TestDb(t *testing.T) {
 	b.SetInt("test1", 100000000)
 	b.SetInt("test2", 1434242324)
 
-	all := b.GetAllInt()
+	all, _ := b.GetAllInt()
 
 	// print all
 	for k, v := range all {
