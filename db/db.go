@@ -59,6 +59,14 @@ func (v *DB) SetString(key string, value string) (error, bool) {
 	return errors.New("please include a value aswell."), false
 }
 
+// get method for string
+
+func (v *DB) GetString(key string) (string, bool) {
+	val, ok := v.data[key];
+	return string(val), ok
+}
+
+
 // this will stay fixed as key will always be type string
 func (v *DB) Del(key string) {
 	delete(v.data, key) // built in delete() func to delete a particular key being held in the db map.
