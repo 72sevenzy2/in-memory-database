@@ -2,6 +2,7 @@ package db
 
 import (
 	"encoding/binary"
+	"fmt"
 )
 
 // core logic
@@ -40,6 +41,9 @@ func (v *DB) GetAllInt() map[string]uint32 {
 
 	for k, v := range v.data {
 		result[k] = binary.LittleEndian.Uint32(v) // serialize into uint32 type before assigning
+	}
+	if len(result) == 0 {
+		fmt.Println("no data stored.")
 	}
 	return result
 }
