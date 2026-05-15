@@ -2,7 +2,7 @@ package db
 
 import (
 	"encoding/binary"
-	"fmt"
+	"errors"
 )
 
 // core logic
@@ -17,7 +17,7 @@ func NewDB() *DB { // initialise a new map to hold data
 }
 
 func (v *DB) SetInt(key string, value uint32) error {
-	buf := make([]byte, 4)
+	buf := make([]byte, 4) // uint32's has a fixed memory size of 4 bytes
 
 	binary.LittleEndian.PutUint32(buf, value)
 
@@ -36,16 +36,27 @@ func (v *DB) GetInt(key string) (uint32, bool) {
 }
 
 // func to retrieve all values at once
-func (v *DB) GetAllInt() map[string]uint32 {
+func (v *DB) GetAllInt() (map[string]uint32, bool) {
 	result := make(map[string]uint32)
 
 	for k, v := range v.data {
 		result[k] = binary.LittleEndian.Uint32(v) // serialize into uint32 type before assigning
 	}
 	if len(result) == 0 {
-		fmt.Println("no data stored.")
+		return nil, false
 	}
-	return result
+	return result, true
+}
+
+// string serialization and handlers
+
+func (v *DB) SetString(key string, value string) (error, bool) {
+	if value != "" {
+		byteStr := []byte(value) // serialize string to type []byte, because db holds values of type []bte
+		v.data[key] = byteStr
+		return nil, true
+	}
+	return errors.New("please include a value aswell."), false
 }
 
 // this will stay fixed as key will always be type string
