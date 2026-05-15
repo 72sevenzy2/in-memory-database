@@ -66,6 +66,21 @@ func (v *DB) GetString(key string) (string, bool) {
 	return string(val), ok
 }
 
+// display all string value data from db
+
+func (v *DB) GetAllString() (map[string]string, bool) {
+	results := make(map[string]string)
+
+	for k, val := range v.data {
+		results[k] = string(val)
+	}
+
+	if len(results) == 0 { // handling no existing data case
+		return nil, false
+	}
+
+	return results, true
+}
 
 // this will stay fixed as key will always be type string
 func (v *DB) Del(key string) {
