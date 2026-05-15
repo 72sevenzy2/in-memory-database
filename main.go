@@ -60,6 +60,14 @@ func main() {
 			} else {
 				fmt.Println(val)
 			}
+		case "FETCH":
+			vals, ok := b.GetAllInt()
+			if !ok {
+				fmt.Println("no data available.")
+			}
+			for k, v := range vals {
+				fmt.Println(k, v)
+			}
 		case "DEL":
 			if len(parts) < 2 {
 				internal.DisplayDel()
