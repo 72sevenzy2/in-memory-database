@@ -110,13 +110,19 @@ func main() {
 		case "DEL":
 			if len(parts) < 2 {
 				DisplayDel()
-				continue
 			}
 			if _, ok := b.GetInt(parts[1]); ok {
 				b.Del(parts[1])
 				fmt.Println("successfully deleted key")
 			} else {
-				fmt.Println("key does not exist:", parts[1])
+				if _, ok := b.GetString(parts[1]); ok {
+					b.Del(parts[1])
+					fmt.Println("successfuly deleted key")
+					continue
+				} else {
+					fmt.Println("key does not exit.", parts[1])
+					continue
+				}
 			}
 		case "HELP":
 			fmt.Println("General usage:")
