@@ -1,6 +1,6 @@
-<h1 align="center"> key-value style in-memory database made using go. </h1>
+<h1 align="center"> key-value style in-memory database. </h1>
 
-<h2 align="center"> quick and easy to use k-v database I built in go. </h2>
+<h2 align="center">a quick and easy to use k-v db built in go. </h2>
 
 - includes cli support.
 - persistant input/error handling for edge cases.
