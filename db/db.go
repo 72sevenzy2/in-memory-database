@@ -17,6 +17,10 @@ func NewDB() *DB { // initialise a new map to hold data
 }
 
 func (v *DB) SetInt(key string, value uint32) error {
+	if value == 0 {
+		return errors.New("please include a value greater than 0.")
+	}
+
 	buf := make([]byte, 4) // uint32's has a fixed memory size of 4 bytes
 
 	binary.LittleEndian.PutUint32(buf, value)
@@ -27,7 +31,7 @@ func (v *DB) SetInt(key string, value uint32) error {
 
 func (v *DB) GetInt(key string) (uint32, bool) {
 	data, ok := v.data[key]
-	if !ok {
+	if !ok || len(data) != 4{
 		return 0, false
 	}
 
@@ -40,6 +44,9 @@ func (v *DB) GetAllInt() (map[string]uint32, bool) {
 	result := make(map[string]uint32)
 
 	for k, v := range v.data {
+		if len(k) != 4 { // small fallback to ignore strings (unsafe but temporary)
+			return nil, false
+		}
 		result[k] = binary.LittleEndian.Uint32(v) // serialize into uint32 type before assigning
 	}
 	if len(result) == 0 {
@@ -50,13 +57,13 @@ func (v *DB) GetAllInt() (map[string]uint32, bool) {
 
 // string serialization and handlers
 
-func (v *DB) SetString(key string, value string) (error, bool) {
+func (v *DB) SetString(key string, value string) error {
 	if value != "" {
 		byteStr := []byte(value) // serialize string to type []byte, because db holds values of type []bte
 		v.data[key] = byteStr
-		return nil, true
+		return nil
 	}
-	return errors.New("please include a value aswell."), false
+	return errors.New("please include a value aswell.")
 }
 
 // get method for string
