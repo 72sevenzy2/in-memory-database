@@ -11,8 +11,8 @@ func TestString(t *testing.T) {
 	d := db.NewDB()
 
 
-	err, _ := d.SetString("test1", "h")
-	err2, _ := d.SetString("test2", "hi2")
+	err := d.SetString("test1", "h")
+	err2 := d.SetString("test2", "hi2")
 
 	if err != nil || err2 != nil {
 		fmt.Println(err.Error(), err2.Error())
