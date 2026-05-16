@@ -17,6 +17,10 @@ func NewDB() *DB { // initialise a new map to hold data
 }
 
 func (v *DB) SetInt(key string, value uint32) error {
+	if value == 0 {
+		return errors.New("please include a value greater than 0.")
+	}
+
 	buf := make([]byte, 4) // uint32's has a fixed memory size of 4 bytes
 
 	binary.LittleEndian.PutUint32(buf, value)
