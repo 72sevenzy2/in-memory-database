@@ -31,7 +31,7 @@ func (v *DB) SetInt(key string, value uint32) error {
 
 func (v *DB) GetInt(key string) (uint32, bool) {
 	data, ok := v.data[key]
-	if !ok {
+	if !ok || len(data) != 4{
 		return 0, false
 	}
 
