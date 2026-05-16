@@ -50,13 +50,13 @@ func (v *DB) GetAllInt() (map[string]uint32, bool) {
 
 // string serialization and handlers
 
-func (v *DB) SetString(key string, value string) (error, bool) {
+func (v *DB) SetString(key string, value string) error {
 	if value != "" {
 		byteStr := []byte(value) // serialize string to type []byte, because db holds values of type []bte
 		v.data[key] = byteStr
-		return nil, true
+		return nil
 	}
-	return errors.New("please include a value aswell."), false
+	return errors.New("please include a value aswell.")
 }
 
 // get method for string
