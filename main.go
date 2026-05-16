@@ -80,13 +80,7 @@ func main() {
 			} else {
 				fmt.Println(val)
 			}
-
-			// val, ok := b.GetInt(parts[1])
-			// if !ok {
-			// 	fmt.Println("key does not exist")
-			// } else {
-			// 	fmt.Println(val)
-			// }
+			
 		case "FETCH":
 			vals, ok := b.GetAllInt() // returns map[string]uint32
 			if !ok {
