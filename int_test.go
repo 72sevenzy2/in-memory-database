@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestDb(t *testing.T) {
+func TestDbInt(t *testing.T) {
 	b := *db.NewDB()
 	b.SetInt("name", 100000)
 	b.Del("name")
