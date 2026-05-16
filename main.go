@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"errors"
 	"fmt"
 	"os"
 	"strconv"
@@ -12,18 +11,6 @@ import (
 )
 
 // cli usage
-
-// determine whether value data-type is string or int (in this case if its an int we will parse to to an uint64 and typecast it to uint32 to store in db)
-func determineWhetherString(value any) (error, bool) {
-	switch value.(type) {
-	case string:
-		return nil, true
-	case int:
-		return nil, false
-	default:
-		return errors.New("invalid datatype: please consider only string or int for value type."), false
-	}
-}
 
 func main() {
 	b := db.NewDB()
@@ -51,15 +38,28 @@ func main() {
 				continue
 			}
 
-			// parse the string given to type uint first
-			f, err := strconv.ParseUint(parts[2], 10, 32) // return uint64, err
-			if err != nil {
-				fmt.Println("invalid number")
-				continue
-			}
+			f, err := strconv.ParseUint(parts[2], 10, 32) // returns uint64, err.
 
-			b.SetInt(parts[1], uint32(f)) // then typecast to uint32
-			fmt.Println("successful")
+			if err == nil { // its a int.
+				err := b.SetInt(parts[1], uint32(f))
+				if err != nil {
+					fmt.Println(err.Error())
+					continue
+				} else {
+					fmt.Println("successful.")
+					continue
+				}
+			} else {
+				// its a string if unable to parse to uint.
+				err := b.SetString(parts[1], parts[2])
+				if err != nil {
+					fmt.Println(err.Error())
+					continue
+				} else {
+					fmt.Println("successful.")
+					continue
+				}
+			}
 		case "GET":
 			if len(parts) < 2 {
 				fmt.Println("invalid GET format:")
