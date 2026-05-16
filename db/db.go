@@ -44,6 +44,9 @@ func (v *DB) GetAllInt() (map[string]uint32, bool) {
 	result := make(map[string]uint32)
 
 	for k, v := range v.data {
+		if len(k) != 4 { // small fallback to ignore strings (unsafe but temporary)
+			return nil, false
+		}
 		result[k] = binary.LittleEndian.Uint32(v) // serialize into uint32 type before assigning
 	}
 	if len(result) == 0 {
