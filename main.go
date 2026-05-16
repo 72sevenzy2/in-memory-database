@@ -90,10 +90,22 @@ func main() {
 		case "FETCH":
 			vals, ok := b.GetAllInt() // returns map[string]uint32
 			if !ok {
-				fmt.Println("no data stored.")
-			}
-			for k, v := range vals {
-				fmt.Println(k, v)
+				fmt.Println("data of value type strings:")
+				vals, ok := b.GetAllString()
+				if !ok {
+					fmt.Println("no existing data.")
+					continue
+				} else {
+					for k, v := range vals {
+						fmt.Println(k, v)
+						continue
+					}
+				}
+			} else {
+				for k, v := range vals {
+					fmt.Println(k, v)
+					continue
+				}
 			}
 		case "DEL":
 			if len(parts) < 2 {
