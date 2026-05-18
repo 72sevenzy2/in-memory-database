@@ -39,12 +39,12 @@ func (v *DB) SetInt(key string, value uint32) error {
 }
 
 func (v *DB) GetInt(key string) (uint32, bool) {
-	data, ok := v.data[key] // data will be of type of the Entity struct
+	data, ok := v.data[key]         // data will be of type of the Entity struct
 	if !ok || len(data.Data) != 4 { // check if key exists and Data has exactly 4 byte (type uint32 is fixed at 4 bytes)
 		return 0, false
 	}
 
-	var value uint32 // uint32 response (will be typecated to int when displaying to user)
+	var value uint32         // uint32 response (will be typecated to int when displaying to user)
 	if data.Value == "int" { // check if int
 		value = binary.LittleEndian.Uint32(data.Data)
 	}
@@ -60,12 +60,13 @@ func (v *DB) GetAllInt() (map[string]uint32, bool) {
 	for k, v := range v.data {
 		if v.Value == "int" { // make sure type is int before serialization
 			result[k] = binary.LittleEndian.Uint32(v.Data)
-
-			if len(v.Data) == 0 { // no existing data case
-				return nil, false
-			}
 		}
 	}
+
+	if len(result) == 0 { // no existing data case
+		return nil, false
+	}
+
 	return result, true
 }
 
@@ -76,7 +77,7 @@ func (v *DB) SetString(key string, value string) error {
 		byteStr := []byte(value) // serialize string to type []byte, because db holds values of type []bte
 		v.data[key] = Entity{
 			Value: "string",
-			Data: byteStr,
+			Data:  byteStr,
 		}
 		return nil
 	}
@@ -88,7 +89,7 @@ func (v *DB) SetString(key string, value string) error {
 func (v *DB) GetString(key string) (string, bool) {
 	val, ok := v.data[key] // val is if type Entity struct
 
-	var resp string // response string
+	var resp string            // response string
 	if val.Value == "string" { // check if string
 		resp = string(val.Data)
 	}
