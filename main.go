@@ -84,7 +84,6 @@ func main() {
 		case "FETCH":
 			vals, ok := b.GetAllInt() // returns map[string]uint32
 			if !ok {
-				fmt.Println("data of value type strings:")
 				vals, ok := b.GetAllString()
 				if !ok {
 					fmt.Println("no existing data.")
