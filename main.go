@@ -80,9 +80,9 @@ func main() {
 			} else {
 				fmt.Println(val)
 			}
-				
+
 		case "FETCH":
-			vals, ok := b.GetAllInt() // returns map[string]uint32
+			vals, ok := b.GetAllInt() // returns: map[string]uint32, bool
 			if !ok {
 				vals, ok := b.GetAllString()
 				if !ok {

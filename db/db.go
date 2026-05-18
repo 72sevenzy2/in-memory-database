@@ -3,6 +3,7 @@ package db
 import (
 	"encoding/binary"
 	"errors"
+	"strconv"
 )
 
 // core logic
@@ -31,7 +32,7 @@ func (v *DB) SetInt(key string, value uint32) error {
 
 func (v *DB) GetInt(key string) (uint32, bool) {
 	data, ok := v.data[key]
-	if !ok || len(data) != 4{
+	if !ok || len(data) != 4 {
 		return 0, false
 	}
 
@@ -44,15 +45,26 @@ func (v *DB) GetAllInt() (map[string]uint32, bool) {
 	result := make(map[string]uint32)
 
 	for k, v := range v.data {
-		if len(k) != 4 { // small fallback to ignore strings (unsafe but temporary)
-			return nil, false
+		_, err := strconv.ParseUint(strconv.FormatUint(binary.LittleEndian.Uint64(v), 10), 10, 32)
+		if err == nil {
+			result[k] = binary.LittleEndian.Uint32(v) // serialize to uint32 before assigning
 		}
-		result[k] = binary.LittleEndian.Uint32(v) // serialize into uint32 type before assigning
 	}
-	if len(result) == 0 {
+
+	if len(result) == 0 { // no data case
 		return nil, false
 	}
 	return result, true
+
+	// ^^ attempted fixed version
+
+	// for k, v := range v.data {
+	// 	result[k] = binary.LittleEndian.Uint32(v) // serialize into uint32 type before assigning
+	// }
+	// if len(result) == 0 {
+	// 	return nil, false
+	// }
+	// return result, true
 }
 
 // string serialization and handlers
@@ -69,7 +81,7 @@ func (v *DB) SetString(key string, value string) error {
 // get method for string
 
 func (v *DB) GetString(key string) (string, bool) {
-	val, ok := v.data[key];
+	val, ok := v.data[key]
 	return string(val), ok
 }
 
@@ -78,15 +90,33 @@ func (v *DB) GetString(key string) (string, bool) {
 func (v *DB) GetAllString() (map[string]string, bool) {
 	results := make(map[string]string)
 
-	for k, val := range v.data {
-		results[k] = string(val)
+	for k, v := range v.data {
+		_, err := strconv.ParseUint(string(v), 10, 32)
+
+		if err != nil {
+			results[k] = string(v)
+		} else {
+			continue
+		}
 	}
 
-	if len(results) == 0 { // handling no existing data case
+	if len(results) == 0 {
 		return nil, false
 	}
 
 	return results, true
+
+	// ^^ attempted fixed version
+
+	// for k, val := range v.data {
+	// 	results[k] = string(val)
+	// }
+
+	// if len(results) == 0 { // handling no existing data case
+	// 	return nil, false
+	// }
+
+	// return results, true
 }
 
 // this will stay fixed as key will always be type string
