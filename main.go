@@ -87,7 +87,7 @@ func main() {
 
 			if ok {
 				for k, v := range vals {
-					fmt.Println(k, v)
+					fmt.Println(k, int(v))
 				}
 			} else {
 				fmt.Println("no data of value type: 'int' exist.")
