@@ -3,17 +3,22 @@ package db
 import (
 	"encoding/binary"
 	"errors"
-	"strconv"
 )
+
+// metadata for value types
+type Entity struct {
+	Value string // will be kind of like: "string", "int", will manually assign these types after manually checking value type in main.go
+	Data  []byte
+}
 
 // core logic
 type DB struct {
-	data map[string][]byte
+	data map[string]Entity
 }
 
 func NewDB() *DB { // initialise a new map to hold data
 	return &DB{
-		data: make(map[string][]byte),
+		data: make(map[string]Entity),
 	}
 }
 
@@ -22,21 +27,29 @@ func (v *DB) SetInt(key string, value uint32) error {
 		return errors.New("please include a value greater than 0.")
 	}
 
-	buf := make([]byte, 4) // uint32's has a fixed memory size of 4 bytes
+	buf := make([]byte, 4) // uint32's has a fixed byte size of 4
 
 	binary.LittleEndian.PutUint32(buf, value)
 
-	v.data[key] = buf
+	v.data[key] = Entity{
+		Value: "int", // will then be compared in GetAllInt() func to make sure its int
+		Data:  buf,
+	}
 	return nil
 }
 
 func (v *DB) GetInt(key string) (uint32, bool) {
-	data, ok := v.data[key]
-	if !ok || len(data) != 4 {
+	data, ok := v.data[key] // data will be of type of the Entity struct
+	if !ok || len(data.Data) != 4 { // check if key exists and Data has exactly 4 byte (type uint32 is fixed at 4 bytes)
 		return 0, false
 	}
 
-	value := binary.LittleEndian.Uint32(data)
+	var value uint32 // uint32 response (will be typecated to int when displaying to user)
+	if data.Value == "int" { // check if int
+		value = binary.LittleEndian.Uint32(data.Data)
+	}
+
+	// value := binary.LittleEndian.Uint32(data.Data)
 	return value, true
 }
 
@@ -45,26 +58,15 @@ func (v *DB) GetAllInt() (map[string]uint32, bool) {
 	result := make(map[string]uint32)
 
 	for k, v := range v.data {
-		_, err := strconv.ParseUint(strconv.FormatUint(binary.LittleEndian.Uint64(v), 10), 10, 32)
-		if err == nil {
-			result[k] = binary.LittleEndian.Uint32(v) // serialize to uint32 before assigning
+		if v.Value == "int" { // make sure type is int before serialization
+			result[k] = binary.LittleEndian.Uint32(v.Data)
+
+			if len(v.Data) == 0 { // no existing data case
+				return nil, false
+			}
 		}
 	}
-
-	if len(result) == 0 { // no data case
-		return nil, false
-	}
 	return result, true
-
-	// ^^ attempted fixed version
-
-	// for k, v := range v.data {
-	// 	result[k] = binary.LittleEndian.Uint32(v) // serialize into uint32 type before assigning
-	// }
-	// if len(result) == 0 {
-	// 	return nil, false
-	// }
-	// return result, true
 }
 
 // string serialization and handlers
@@ -72,7 +74,10 @@ func (v *DB) GetAllInt() (map[string]uint32, bool) {
 func (v *DB) SetString(key string, value string) error {
 	if value != "" {
 		byteStr := []byte(value) // serialize string to type []byte, because db holds values of type []bte
-		v.data[key] = byteStr
+		v.data[key] = Entity{
+			Value: "string",
+			Data: byteStr,
+		}
 		return nil
 	}
 	return errors.New("please include a value aswell.")
@@ -81,8 +86,14 @@ func (v *DB) SetString(key string, value string) error {
 // get method for string
 
 func (v *DB) GetString(key string) (string, bool) {
-	val, ok := v.data[key]
-	return string(val), ok
+	val, ok := v.data[key] // val is if type Entity struct
+
+	var resp string // response string
+	if val.Value == "string" { // check if string
+		resp = string(val.Data)
+	}
+
+	return resp, ok
 }
 
 // display all string value data from db
@@ -90,33 +101,17 @@ func (v *DB) GetString(key string) (string, bool) {
 func (v *DB) GetAllString() (map[string]string, bool) {
 	results := make(map[string]string)
 
-	for k, v := range v.data {
-		_, err := strconv.ParseUint(string(v), 10, 32)
-
-		if err != nil {
-			results[k] = string(v)
-		} else {
-			continue
+	for k, val := range v.data {
+		if val.Value == "string" {
+			results[k] = string(val.Data)
 		}
 	}
 
-	if len(results) == 0 {
+	if len(results) == 0 { // handling no existing data case
 		return nil, false
 	}
 
 	return results, true
-
-	// ^^ attempted fixed version
-
-	// for k, val := range v.data {
-	// 	results[k] = string(val)
-	// }
-
-	// if len(results) == 0 { // handling no existing data case
-	// 	return nil, false
-	// }
-
-	// return results, true
 }
 
 // this will stay fixed as key will always be type string
