@@ -5,6 +5,108 @@
   <li>interactive cli mode, which stores variable-like data (for now only supports values of type string and int) to then be retrieved         later with methods like "GET", "SET", "DEL", and "EXIT" to exit the program.</li>
   <li>serializes values to bytes before appending to the database struct for optimised performance.</li>
 </ul>
+
+<h1 align="center">usage:</h1>
+<h3 align="center">to start off, you can either set data using SetInt() for key-values with values having type int, or SetString() for key-values with values having type string:</h3>
+
+```
+package main
+
+import (
+	"fmt"
+	"github.com/72sevenzy2/in-memory-database/db"
+)
+
+func main() {
+	v := db.NewDB()
+
+	err := v.SetInt("test1", 200) // setting ints
+	if err != nil {
+		panic(err)
+	}
+
+	err2 := v.SetString("test2", "hello") // setting strings
+	if err2 != nil {
+		panic(err2)
+	}
+}
+```
+<h3 align="center">afterwards, you may retrieve them like so:</h3>
+
+```
+package main
+
+
+import (
+	"fmt"
+	"github.com/72sevenzy2/in-memory-database/db"
+)
+
+func main() {
+	v := db.NewDB()
+
+	val, ok := v.GetInt("test1")
+	if ok {
+		fmt.Println(val)
+	}
+
+	val2, ok2 := v.GetString("test2")
+	if ok2 {
+		fmt.Println(val2)
+	}
+	
+}
+```
+
+<h3 align="center">if you want to retrieve all key-values with values of type strings/ints:</h3>
+
+```
+package main
+
+import (
+	"fmt"
+	"github.com/72sevenzy2/in-memory-database/db"
+)
+
+func main() {
+	v := db.NewDB()
+
+	vals, ok := v.GetAllString() // vals is of type map[string]string
+	if ok {
+		for k, v := range vals {
+			fmt.Println(k, v)
+		}
+	}
+
+	vals2, ok2 := v.GetAllInt() // vals2 is of type map[string]uint32
+	if ok2 {
+		for k, v := range vals2 {
+			fmt.Println(k, v)
+		}
+	}
+
+}
+```
+
+<h3 align="center">and finally, to delete keys:</h3>
+
+```
+package main
+
+import (
+	"fmt"
+	"github.com/72sevenzy2/in-memory-database/db"
+)
+
+func main() {
+	v := db.NewDB()
+
+	v.Del("keyNAme")
+
+}
+
+```
+
 <br>
 <h1 align="center">interactive cli tutorial:</h1>
 <h2 align="center">run the following to begin:</h2>
