@@ -1,7 +1,5 @@
 <h1 align="center"> key-value style in-memory database. </h1>
 
-<h2 align="center">a quick and easy to use key-value db built in go. </h2>
-
 <ul>
   <li>persistant input/error handling for edge cases.</li>
   <li>interactive cli mode, which stores variable-like data (for now only supports values of type string and int) to then be retrieved         later with methods like "GET", "SET", "DEL", and "EXIT" to exit the program.</li>
