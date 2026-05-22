@@ -19,7 +19,10 @@ func main() {
 
 	for {
 		fmt.Print("> ")
-		scanner.Scan()
+		safe := scanner.Scan()
+		if !safe {
+			scanner.Err()
+		}
 
 		input := scanner.Text()
 		parts := strings.Fields(input)
