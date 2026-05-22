@@ -101,7 +101,7 @@ import (
 func main() {
 	v := db.NewDB()
 
-	v.Del("keyNAme")
+	v.Del("keyName")
 
 }
 
