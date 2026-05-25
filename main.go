@@ -102,23 +102,6 @@ func main() {
 			} else {
 				fmt.Println("no data of value type: 'string' exists.")
 			}
-
-			// vals, ok := b.GetAllInt() // returns: map[string]uint32, bool
-			// if !ok {
-			// 	vals, ok := b.GetAllString()
-			// 	if !ok {
-			// 		fmt.Println("no existing data.")
-			// 		continue
-			// 	} else {
-			// 		for k, v := range vals {
-			// 			fmt.Println(k, v)
-			// 		}
-			// 	}
-			// } else {
-			// 	for k, v := range vals {
-			// 		fmt.Println(k, v)
-			// 	}
-			// }
 		case "DEL":
 			if len(parts) < 2 {
 				DisplayDel()
