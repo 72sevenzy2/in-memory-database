@@ -1,7 +1,7 @@
 <h1 align="center"> key-value style in-memory database. </h1>
 <br>
 <ul>
-  <li>persistant input/error handling for edge cases.</li>
+  <li>persistant error handling for edge cases.</li>
   <li>interactive cli mode, which stores variable-like data (for now only supports values of type string and int) to then be retrieved         later with methods like "GET", "SET", "DEL", and "EXIT" to exit the program.</li>
   <li>serializes values to bytes before appending to the database struct for optimised performance.</li>
 </ul>
@@ -58,6 +58,57 @@ func main() {
 }
 ```
 
+<<<<<<< HEAD
+=======
+<h3 align="center">if you want to retrieve all key-values with values of type strings/ints:</h3>
+
+```
+package main
+
+import (
+	"fmt"
+	"github.com/72sevenzy2/in-memory-database/db"
+)
+
+func main() {
+	v := db.NewDB()
+
+	vals, ok := v.GetAllString() // vals is of type map[string]string
+	if ok {
+		for k, v := range vals {
+			fmt.Println(k, v)
+		}
+	}
+
+	vals2, ok2 := v.GetAllInt() // vals2 is of type map[string]uint32
+	if ok2 {
+		for k, v := range vals2 {
+			fmt.Println(k, v)
+		}
+	}
+
+}
+```
+
+<h3 align="center">and finally, to delete keys:</h3>
+
+```
+package main
+
+import (
+	"fmt"
+	"github.com/72sevenzy2/in-memory-database/db"
+)
+
+func main() {
+	v := db.NewDB()
+
+	v.Del("keyName")
+
+}
+
+```
+>>>>>>> 24b9a8a6fff86a30ac814c2ac917ba84bcdd6632
 
 <br>
 <h1 align="center">interactive cli tutorial:</h1>
