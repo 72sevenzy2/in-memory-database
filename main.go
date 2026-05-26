@@ -83,22 +83,16 @@ func main() {
 		case "FETCH":
 			vals, ok := b.GetAllInt()      // returns map[string]uint32, bool
 			vals2, ok2 := b.GetAllString() // returns map[string]string, bool
-			if !ok {
-				fmt.Println("no data of value type: 'int' exist.")
-				continue
-			}
-			if !ok2 {
-				fmt.Println("no data of value type: 'string' exists.")
-				continue
-			}
-			// validate if values exist first ^
 
-			for k, v := range vals {
-				fmt.Println(k, int(v))
+			if ok {
+				for k, v := range vals {
+					fmt.Println(k, int(v))
+				}
 			}
-
-			for k, v := range vals2 {
-				fmt.Println(k, v)
+			if ok2 {
+				for k, v := range vals2 {
+					fmt.Println(k, v)
+				}
 			}
 		case "DEL":
 			if len(parts) < 2 {
