@@ -48,21 +48,19 @@ func main() {
 				if err != nil {
 					fmt.Println(err.Error())
 					continue
-				} else {
-					fmt.Println("successful.")
-					continue
 				}
-			} else {
-				// its a string if unable to parse to uint.
-				err := b.SetString(parts[1], parts[2])
-				if err != nil {
-					fmt.Println(err.Error())
-					continue
-				} else {
-					fmt.Println("successful.")
-					continue
-				}
+				fmt.Println("successful.")
+				continue
 			}
+			// its a string if unable to parse to uint.
+			err2 := b.SetString(parts[1], parts[2])
+			if err2 != nil {
+				fmt.Println(err.Error())
+				continue
+			}
+			fmt.Println("successful.")
+			continue
+
 		case "GET":
 			if len(parts) < 2 {
 				fmt.Println("invalid GET format:")
@@ -76,31 +74,31 @@ func main() {
 				if !ok2 {
 					fmt.Println("data does not exist")
 					continue
-				} else {
-					fmt.Println(val2)
-					continue
 				}
-			} else {
-				fmt.Println(val)
+				fmt.Println(val2)
+				continue
 			}
+			fmt.Println(val)
 
 		case "FETCH":
-			vals, ok := b.GetAllInt() // returns map[string]uint32, bool
+			vals, ok := b.GetAllInt()      // returns map[string]uint32, bool
 			vals2, ok2 := b.GetAllString() // returns map[string]string, bool
-
-			if ok {
-				for k, v := range vals {
-					fmt.Println(k, int(v))
-				}
-			} else {
+			if !ok {
 				fmt.Println("no data of value type: 'int' exist.")
+				continue
 			}
-			if ok2 {
-				for k, v := range vals2 {
-					fmt.Println(k, v)
-				}
-			} else {
+			if !ok2 {
 				fmt.Println("no data of value type: 'string' exists.")
+				continue
+			}
+			// validate if values exist first ^
+
+			for k, v := range vals {
+				fmt.Println(k, int(v))
+			}
+
+			for k, v := range vals2 {
+				fmt.Println(k, v)
 			}
 		case "DEL":
 			if len(parts) < 2 {
@@ -109,16 +107,15 @@ func main() {
 			if _, ok := b.GetInt(parts[1]); ok {
 				b.Del(parts[1])
 				fmt.Println("successfully deleted key")
-			} else {
-				if _, ok := b.GetString(parts[1]); ok {
-					b.Del(parts[1])
-					fmt.Println("successfuly deleted key")
-					continue
-				} else {
-					fmt.Println("key does not exit.", parts[1])
-					continue
-				}
 			}
+			if _, ok := b.GetString(parts[1]); ok {
+				b.Del(parts[1])
+				fmt.Println("successfuly deleted key")
+				continue
+			}
+			fmt.Println("key does not exit.", parts[1])
+			continue
+
 		case "HELP":
 			fmt.Println("General usage:")
 			DisplayGet()
