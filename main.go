@@ -35,7 +35,7 @@ func main() {
 
 		switch UCinput {
 		case "SET":
-			if len(parts) < 3 {
+			if len(parts) < 3 || len(parts) > 3{
 				fmt.Println("invalid SET format:")
 				DisplaySet()
 				continue
@@ -62,7 +62,7 @@ func main() {
 			continue
 
 		case "GET":
-			if len(parts) < 2 {
+			if len(parts) < 2 || len(parts) > 2{
 				fmt.Println("invalid GET format:")
 				DisplayGet()
 				continue
@@ -95,7 +95,7 @@ func main() {
 				}
 			}
 		case "DEL":
-			if len(parts) < 2 {
+			if len(parts) < 2 || len(parts) > 2{
 				DisplayDel()
 			}
 			if _, ok := b.GetInt(parts[1]); ok {
@@ -116,7 +116,7 @@ func main() {
 			DisplaySet()
 			DisplayDel()
 
-			fmt.Println("\nTo exit: run <EXIT>")
+			fmt.Println("\nto exit: run <exit")
 		case "EXIT":
 			fmt.Println("exited program")
 			return
