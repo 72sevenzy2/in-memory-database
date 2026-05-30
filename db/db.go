@@ -7,8 +7,8 @@ import (
 
 // metadata for value types
 type Entity struct {
-	Value string // will be kind of like: "string", "int", will manually assign these types after manually checking value type in main.go
 	Data  []byte
+	Value string // will be kind of like: "string", "int", will manually assign these types after manually checking value type in main.go
 }
 
 // core logic

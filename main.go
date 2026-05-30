@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"math"
 	"os"
 	"strconv"
 	"strings"
@@ -44,6 +45,13 @@ func main() {
 			f, err := strconv.ParseUint(parts[2], 10, 32) // returns uint64, err.
 
 			if err == nil { // its a int.
+
+				// prevent f from overflowing if number entered is too big
+				if f > math.MaxUint32 {
+					fmt.Println("please include a number value less than unsigned int32.")
+					continue
+				}
+
 				err := b.SetInt(parts[1], uint32(f))
 				if err != nil {
 					fmt.Println(err.Error())
