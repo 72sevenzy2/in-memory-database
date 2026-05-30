@@ -58,8 +58,6 @@ func main() {
 }
 ```
 
-<<<<<<< HEAD
-=======
 <h3 align="center">if you want to retrieve all key-values with values of type strings/ints:</h3>
 
 ```
