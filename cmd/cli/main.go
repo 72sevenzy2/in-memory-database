@@ -7,6 +7,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"net"
 
 	"github.com/72sevenzy2/in-memory-database/db"
 	usa "github.com/72sevenzy2/in-memory-database"
@@ -15,6 +16,11 @@ import (
 // cli usage
 
 func main() {
+	_, err := net.Dial("tcp", ":8080") // connect with tcp server
+	if err != nil {
+		panic(err)
+	}
+
 	b := db.NewDB()
 
 	scanner := bufio.NewScanner(os.Stdin)
