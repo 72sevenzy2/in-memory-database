@@ -48,25 +48,6 @@ func main() {
 
 		switch UCinput {
 
-		case "GET":
-			if len(parts) < 2 || len(parts) > 2 {
-				fmt.Println("invalid GET format:")
-				usa.DisplayGet()
-				continue
-			}
-
-			val, ok := b.GetInt(parts[1])
-			if !ok {
-				val2, ok2 := b.GetString(parts[1])
-				if !ok2 {
-					fmt.Println("data does not exist")
-					continue
-				}
-				fmt.Println(val2)
-				continue
-			}
-			fmt.Println(val)
-
 		case "FETCH":
 			vals, ok := b.GetAllInt()      // returns map[string]uint32, bool
 			vals2, ok2 := b.GetAllString() // returns map[string]string, bool
