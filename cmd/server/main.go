@@ -3,11 +3,14 @@ package main
 import (
 	"fmt"
 	"net"
+
+	"github.com/72sevenzy2/in-memory-database/db"
 )
 
 func main() {
+	// start tcp server
 	ln, err := net.Listen("tcp", ":8080");
-	if err != nil {
+	if err != nil {	
 		panic(err)
 	}
 

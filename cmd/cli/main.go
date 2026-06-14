@@ -16,7 +16,7 @@ import (
 // cli usage
 
 func main() {
-	_, err := net.Dial("tcp", ":8080") // connect with tcp server
+	conn, err := net.Dial("tcp", ":8080") // connect with tcp server
 	if err != nil {
 		panic(err)
 	}
@@ -40,6 +40,8 @@ func main() {
 		}
 
 		UCinput := strings.ToUpper(parts[0])
+
+		
 
 		switch UCinput {
 		case "SET":
