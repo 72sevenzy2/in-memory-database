@@ -4,13 +4,13 @@ import (
 	"bufio"
 	"fmt"
 	"math"
+	"net"
 	"os"
 	"strconv"
 	"strings"
-	"net"
 
-	"github.com/72sevenzy2/in-memory-database/db"
 	usa "github.com/72sevenzy2/in-memory-database"
+	"github.com/72sevenzy2/in-memory-database/db"
 )
 
 // cli usage
@@ -41,11 +41,16 @@ func main() {
 
 		UCinput := strings.ToUpper(parts[0])
 
-		
+		// send input to tcp server
+		_, err := conn.Write([]byte(input))
+		if err != nil {
+			fmt.Println(err.Error())
+			continue
+		}
 
 		switch UCinput {
 		case "SET":
-			if len(parts) < 3 || len(parts) > 3{
+			if len(parts) < 3 || len(parts) > 3 {
 				fmt.Println("invalid SET format:")
 				usa.DisplaySet()
 				continue
@@ -79,7 +84,7 @@ func main() {
 			continue
 
 		case "GET":
-			if len(parts) < 2 || len(parts) > 2{
+			if len(parts) < 2 || len(parts) > 2 {
 				fmt.Println("invalid GET format:")
 				usa.DisplayGet()
 				continue
@@ -112,7 +117,7 @@ func main() {
 				}
 			}
 		case "DEL":
-			if len(parts) < 2 || len(parts) > 2{
+			if len(parts) < 2 || len(parts) > 2 {
 				usa.DisplayDel()
 			}
 			if _, ok := b.GetInt(parts[1]); ok {
