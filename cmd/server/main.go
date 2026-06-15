@@ -56,7 +56,7 @@ func main() {
 				switch UCinput {
 				case "SET":
 					if len(parts) < 3 || len(parts) > 3 {
-						fmt.Println("invalid SET format:")
+						conn.Write([]byte("invalid SET format:"))
 						usa.DisplaySet(conn)
 						continue
 					}
@@ -67,16 +67,16 @@ func main() {
 
 						// prevent f from overflowing if number entered is too big
 						if f > math.MaxUint32 {
-							fmt.Println("please include a number value less than unsigned int32.")
+							conn.Write([]byte("please include a number value less than unsigned int32."))
 							continue
 						}
 
 						err := b.SetInt(parts[1], uint32(f))
 						if err != nil {
-							fmt.Println(err.Error())
+							fmt.Println(err.Error()) // print on server side
 							continue
 						}
-						fmt.Println("successful.")
+						conn.Write([]byte("successful."))
 						continue
 					}
 					// its a string if unable to parse to uint.
@@ -85,12 +85,12 @@ func main() {
 						fmt.Println(err.Error())
 						continue
 					}
-					fmt.Println("successful.")
+					conn.Write([]byte("successful."))
 					continue
 
 				case "GET":
 					if len(parts) < 2 || len(parts) > 2 {
-						fmt.Println("invalid GET format:")
+						conn.Write([]byte("invalid GET format:"))
 						usa.DisplayGet(conn)
 						continue
 					}
@@ -99,13 +99,14 @@ func main() {
 					if !ok {
 						val2, ok2 := b.GetString(parts[1])
 						if !ok2 {
-							fmt.Println("data does not exist")
+							conn.Write([]byte("data does not exist"))
 							continue
 						}
-						fmt.Println(val2)
+						conn.Write([]byte(val2))
 						continue
 					}
-					fmt.Println(val)
+					// fmt.Println(val)
+					conn.Write([]byte(strconv.FormatUint(uint64(val), 10))) // convert uint32 to readable format
 
 				case "FETCH":
 					vals, ok := b.GetAllInt()      // returns map[string]uint32, bool
@@ -113,12 +114,12 @@ func main() {
 
 					if ok {
 						for k, v := range vals {
-							fmt.Println(k, int(v))
+							fmt.Fprintln(conn, k, int(v))
 						}
 					}
 					if ok2 {
 						for k, v := range vals2 {
-							fmt.Println(k, v)
+							fmt.Fprintln(conn, k, v)
 						}
 					}
 
@@ -128,29 +129,29 @@ func main() {
 					}
 					if _, ok := b.GetInt(parts[1]); ok {
 						b.Del(parts[1])
-						fmt.Println("successfully deleted key")
+						conn.Write([]byte("successfully deleted key"))
 					}
 					if _, ok := b.GetString(parts[1]); ok {
 						b.Del(parts[1])
-						fmt.Println("successfuly deleted key")
+						conn.Write([]byte("successfuly deleted key"))
 						continue
 					}
-					fmt.Println("key does not exit.", parts[1])
+					fmt.Fprintln(conn, "key does not exit.", parts[1])
 					continue
 
 				case "HELP":
-					fmt.Println("General usage:")
+					conn.Write([]byte("General usage:"))
 					usa.DisplayGet(conn)
 					usa.DisplaySet(conn)
 					usa.DisplayDel(conn)
 
-					fmt.Println("\nto exit: run <exit")
+					conn.Write([]byte("\nto exit: run <exit"))
 				case "EXIT":
-					fmt.Println("exited program")
+					conn.Write([]byte("exited program."))
 					return
 
 				default:
-					fmt.Println("invalid command")
+					conn.Write([]byte("invalid command."))
 				}
 
 			}
