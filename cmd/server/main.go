@@ -57,7 +57,7 @@ func main() {
 				case "SET":
 					if len(parts) < 3 || len(parts) > 3 {
 						fmt.Println("invalid SET format:")
-						usa.DisplaySet()
+						usa.DisplaySet(conn)
 						continue
 					}
 
@@ -91,7 +91,7 @@ func main() {
 				case "GET":
 					if len(parts) < 2 || len(parts) > 2 {
 						fmt.Println("invalid GET format:")
-						usa.DisplayGet()
+						usa.DisplayGet(conn)
 						continue
 					}
 
@@ -124,7 +124,7 @@ func main() {
 
 				case "DEL":
 					if len(parts) < 2 || len(parts) > 2 {
-						usa.DisplayDel()
+						usa.DisplayDel(conn)
 					}
 					if _, ok := b.GetInt(parts[1]); ok {
 						b.Del(parts[1])
@@ -140,9 +140,9 @@ func main() {
 
 				case "HELP":
 					fmt.Println("General usage:")
-					usa.DisplayGet()
-					usa.DisplaySet()
-					usa.DisplayDel()
+					usa.DisplayGet(conn)
+					usa.DisplaySet(conn)
+					usa.DisplayDel(conn)
 
 					fmt.Println("\nto exit: run <exit")
 				case "EXIT":
