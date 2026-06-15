@@ -26,6 +26,7 @@ func main() {
 			continue
 		}
 
+		// seperate thread for each connection
 		go func(c net.Conn) {
 			defer c.Close() // close connection after reading
 
@@ -52,7 +53,7 @@ func main() {
 
 				UCinput := strings.ToUpper(parts[0]) // normalise to all capital
 
-				switch UCinput {
+				switch  UCinput{
 				case "SET":
 					if len(parts) < 3 || len(parts) > 3 {
 						fmt.Println("invalid SET format:")
@@ -105,7 +106,53 @@ func main() {
 						continue
 					}
 					fmt.Println(val)
+
+				case "FETCH":
+					vals, ok := b.GetAllInt()      // returns map[string]uint32, bool
+					vals2, ok2 := b.GetAllString() // returns map[string]string, bool
+
+					if ok {
+						for k, v := range vals {
+							fmt.Println(k, int(v))
+						}
+					}
+					if ok2 {
+						for k, v := range vals2 {
+							fmt.Println(k, v)
+						}
+					}
+
+				case "DEL":
+					if len(parts) < 2 || len(parts) > 2 {
+						usa.DisplayDel()
+					}
+					if _, ok := b.GetInt(parts[1]); ok {
+						b.Del(parts[1])
+						fmt.Println("successfully deleted key")
+					}
+					if _, ok := b.GetString(parts[1]); ok {
+						b.Del(parts[1])
+						fmt.Println("successfuly deleted key")
+						continue
+					}
+					fmt.Println("key does not exit.", parts[1])
+					continue
+
+				case "HELP":
+					fmt.Println("General usage:")
+					usa.DisplayGet()
+					usa.DisplaySet()
+					usa.DisplayDel()
+
+					fmt.Println("\nto exit: run <exit")
+				case "EXIT":
+					fmt.Println("exited program")
+					return
+
+				default:
+					fmt.Println("invalid command")
 				}
+
 			}
 		}(conn)
 

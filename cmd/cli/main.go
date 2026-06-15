@@ -6,9 +6,6 @@ import (
 	"net"
 	"os"
 	"strings"
-
-	usa "github.com/72sevenzy2/in-memory-database"
-	"github.com/72sevenzy2/in-memory-database/db"
 )
 
 // cli usage
@@ -18,8 +15,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
-	b := db.NewDB()
 
 	scanner := bufio.NewScanner(os.Stdin)
 
@@ -48,49 +43,8 @@ func main() {
 
 		switch UCinput {
 
-		case "FETCH":
-			vals, ok := b.GetAllInt()      // returns map[string]uint32, bool
-			vals2, ok2 := b.GetAllString() // returns map[string]string, bool
+				
 
-			if ok {
-				for k, v := range vals {
-					fmt.Println(k, int(v))
-				}
-			}
-			if ok2 {
-				for k, v := range vals2 {
-					fmt.Println(k, v)
-				}
-			}
-		case "DEL":
-			if len(parts) < 2 || len(parts) > 2 {
-				usa.DisplayDel()
-			}
-			if _, ok := b.GetInt(parts[1]); ok {
-				b.Del(parts[1])
-				fmt.Println("successfully deleted key")
-			}
-			if _, ok := b.GetString(parts[1]); ok {
-				b.Del(parts[1])
-				fmt.Println("successfuly deleted key")
-				continue
-			}
-			fmt.Println("key does not exit.", parts[1])
-			continue
-
-		case "HELP":
-			fmt.Println("General usage:")
-			usa.DisplayGet()
-			usa.DisplaySet()
-			usa.DisplayDel()
-
-			fmt.Println("\nto exit: run <exit")
-		case "EXIT":
-			fmt.Println("exited program")
-			return
-
-		default:
-			fmt.Println("invalid command")
 		}
 	}
 
