@@ -41,7 +41,7 @@ func main() {
 					return
 				}
 
-				input := string(buf[:n])
+				input := string(buf[:n]) // n returns the number of bytes read
 
 				parts := strings.Fields(input)
 
@@ -53,7 +53,7 @@ func main() {
 
 				UCinput := strings.ToUpper(parts[0]) // normalise to all capital
 
-				switch  UCinput{
+				switch UCinput {
 				case "SET":
 					if len(parts) < 3 || len(parts) > 3 {
 						fmt.Println("invalid SET format:")
