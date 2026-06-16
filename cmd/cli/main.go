@@ -16,12 +16,14 @@ func main() {
 	}
 
 	scanner := bufio.NewScanner(os.Stdin)
+	reader := bufio.NewReader(conn)
 
 	for {
 		fmt.Print("> ")
 		safe := scanner.Scan()
 		if !safe {
 			scanner.Err()
+			break
 		}
 
 		input := scanner.Text()
@@ -32,6 +34,14 @@ func main() {
 			fmt.Println(err.Error())
 			continue
 		}
+
+		resp, err2 := reader.ReadString('\n')
+		if err2 != nil {
+			fmt.Println(err2.Error())
+			continue
+		}
+
+		fmt.Println(resp)
 	}
 
 }
