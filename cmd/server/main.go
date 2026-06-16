@@ -56,7 +56,7 @@ func main() {
 				switch UCinput {
 				case "SET":
 					if len(parts) < 3 || len(parts) > 3 {
-						conn.Write([]byte("invalid SET format:"))
+						conn.Write([]byte("invalid SET format:\n"))
 						usa.DisplaySet(conn)
 						continue
 					}
@@ -67,7 +67,7 @@ func main() {
 
 						// prevent f from overflowing if number entered is too big
 						if f > math.MaxUint32 {
-							conn.Write([]byte("please include a number value less than unsigned int32."))
+							conn.Write([]byte("please include a number value less than unsigned int32.\n"))
 							continue
 						}
 
@@ -76,7 +76,7 @@ func main() {
 							fmt.Println(err.Error()) // print on server side
 							continue
 						}
-						conn.Write([]byte("successful."))
+						conn.Write([]byte("successful.\n"))
 						continue
 					}
 					// its a string if unable to parse to uint.
@@ -85,12 +85,12 @@ func main() {
 						fmt.Println(err.Error())
 						continue
 					}
-					conn.Write([]byte("successful."))
+					conn.Write([]byte("successful.\n"))
 					continue
 
 				case "GET":
 					if len(parts) < 2 || len(parts) > 2 {
-						conn.Write([]byte("invalid GET format:"))
+						conn.Write([]byte("invalid GET format:\n"))
 						usa.DisplayGet(conn)
 						continue
 					}
@@ -99,7 +99,7 @@ func main() {
 					if !ok {
 						val2, ok2 := b.GetString(parts[1])
 						if !ok2 {
-							conn.Write([]byte("data does not exist"))
+							conn.Write([]byte("data does not exist\n"))
 							continue
 						}
 						conn.Write([]byte(val2))
@@ -129,29 +129,29 @@ func main() {
 					}
 					if _, ok := b.GetInt(parts[1]); ok {
 						b.Del(parts[1])
-						conn.Write([]byte("successfully deleted key"))
+						conn.Write([]byte("successfully deleted key\n"))
 					}
 					if _, ok := b.GetString(parts[1]); ok {
 						b.Del(parts[1])
-						conn.Write([]byte("successfuly deleted key"))
+						conn.Write([]byte("successfuly deleted key\n"))
 						continue
 					}
 					fmt.Fprintln(conn, "key does not exit.", parts[1])
 					continue
 
 				case "HELP":
-					conn.Write([]byte("General usage:"))
+					conn.Write([]byte("General usage:\n"))
 					usa.DisplayGet(conn)
 					usa.DisplaySet(conn)
 					usa.DisplayDel(conn)
 
-					conn.Write([]byte("\nto exit: run <exit"))
+					conn.Write([]byte("\nto exit: run <exit\n"))
 				case "EXIT":
-					conn.Write([]byte("exited program."))
+					conn.Write([]byte("exited program.\n"))
 					return
 
 				default:
-					conn.Write([]byte("invalid command."))
+					conn.Write([]byte("invalid command.\n"))
 				}
 
 			}
