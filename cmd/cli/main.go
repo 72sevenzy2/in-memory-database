@@ -22,7 +22,10 @@ func main() {
 		fmt.Print("> ")
 		safe := scanner.Scan()
 		if !safe {
-			scanner.Err()
+			err := scanner.Err()
+			if err != nil {
+				fmt.Println(err)
+			}
 			break
 		}
 
