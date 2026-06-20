@@ -1,19 +1,15 @@
-package main
+package outer
 
 import (
-	"fmt"
+	"net"
 )
 
 // reusable functions to display input format (SET and GET)
 
-func DisplaySet() {
-	fmt.Println("usage: SET <KeyName> <value>")
-}
-
-func DisplayGet() {
-	fmt.Println("usage: GET <KeyName>")
-}
-
-func DisplayDel() {
-	fmt.Println("usage: DEL <KeyName>")
+func DisplayUsage(conn net.Conn) {
+	conn.Write([]byte(`
+		SET <KeyName> <value>
+		GET <KeyName>
+		DEL <KeyName>
+	\n`))
 }

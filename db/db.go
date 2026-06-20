@@ -36,7 +36,7 @@ func (v *DB) SetInt(key string, value uint32) error {
 		Data:  buf,
 	}
 	return nil
-}
+}	
 
 func (v *DB) GetInt(key string) (uint32, bool) {
 	data, ok := v.data[key]         // data will be of type of the Entity struct
