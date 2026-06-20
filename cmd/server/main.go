@@ -57,7 +57,7 @@ func main() {
 				case "SET":
 					if len(parts) < 3 || len(parts) > 3 {
 						conn.Write([]byte("invalid SET format:\n"))
-						usa.DisplaySet(conn)
+						conn.Write([]byte("SET <KeyName> <value>\n"))
 						continue
 					}
 
@@ -91,7 +91,7 @@ func main() {
 				case "GET":
 					if len(parts) < 2 || len(parts) > 2 {
 						conn.Write([]byte("invalid GET format:\n"))
-						usa.DisplayGet(conn)
+						conn.Write([]byte("GET <KeyName>\n"))
 						continue
 					}
 
@@ -125,7 +125,7 @@ func main() {
 
 				case "DEL":
 					if len(parts) < 2 || len(parts) > 2 {
-						usa.DisplayDel(conn)
+						conn.Write([]byte("usage: DEL <KeyName>\n"))
 					}
 					if _, ok := b.GetInt(parts[1]); ok {
 						b.Del(parts[1])
@@ -141,9 +141,7 @@ func main() {
 
 				case "HELP":
 					conn.Write([]byte("General usage:\n"))
-					usa.DisplayGet(conn)
-					usa.DisplaySet(conn)
-					usa.DisplayDel(conn)
+					usa.DisplayUsage(conn)
 
 					conn.Write([]byte("\nto exit: run <exit\n"))
 				case "EXIT":
