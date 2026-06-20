@@ -102,11 +102,11 @@ func main() {
 							conn.Write([]byte("data does not exist\n"))
 							continue
 						}
-						conn.Write([]byte(val2))
+						conn.Write([]byte(val2 + "\n"))
 						continue
 					}
 					// fmt.Println(val)
-					conn.Write([]byte(strconv.FormatUint(uint64(val), 10))) // convert uint32 to readable format
+					conn.Write([]byte(strconv.FormatUint(uint64(val), 10) + "\n")) // convert uint32 to readable format
 
 				case "FETCH":
 					vals, ok := b.GetAllInt()      // returns map[string]uint32, bool
