@@ -58,8 +58,6 @@ func main() {
 }
 ```
 
-<<<<<<< HEAD
-=======
 <h3 align="center">if you want to retrieve all key-values with values of type strings/ints:</h3>
 
 ```
@@ -108,7 +106,6 @@ func main() {
 }
 
 ```
->>>>>>> 24b9a8a6fff86a30ac814c2ac917ba84bcdd6632
 
 <br>
 <h1 align="center">interactive cli tutorial:</h1>
