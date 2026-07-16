@@ -25,12 +25,12 @@ func main() {
 			fmt.Println(err.Error()) // err acceping connections
 			continue
 		}
+		
+		b := db.NewDB() // db
 
 		// seperate thread for each connection
 		go func(c net.Conn) {
 			defer c.Close() // close connection after reading
-
-			b := db.NewDB() // db
 
 			buf := make([]byte, 1024) // preallocated buffer
 
