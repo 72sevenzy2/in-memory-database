@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"math"
 	"net"
 	"strconv"
 	"strings"
@@ -25,10 +24,9 @@ func main() {
 			fmt.Println(err.Error()) // err acceping connections
 			continue
 		}
-		
 		b := db.NewDB() // db
 
-		// seperate thread for each connection
+		// seperate gorounine for each connection
 		go func(c net.Conn) {
 			defer c.Close() // close connection after reading
 
@@ -55,39 +53,10 @@ func main() {
 
 				switch UCinput {
 				case "SET":
-					if len(parts) < 3 || len(parts) > 3 {
-						conn.Write([]byte("invalid SET format:\n"))
-						conn.Write([]byte("SET <KeyName> <value>\n"))
+					ok := Set(parts, conn, b)
+					if !ok {
 						continue
 					}
-
-					f, err := strconv.ParseUint(parts[2], 10, 32) // returns uint64, err.
-
-					if err == nil { // its a int.
-
-						// prevent f from overflowing if number entered is too big
-						if f > math.MaxUint32 {
-							conn.Write([]byte("please include a number value less than unsigned int32.\n"))
-							continue
-						}
-
-						err := b.SetInt(parts[1], uint32(f))
-						if err != nil {
-							fmt.Println(err.Error()) // print on server side
-							continue
-						}
-						conn.Write([]byte("successful.\n"))
-						continue
-					}
-					// its a string if unable to parse to uint.
-					err2 := b.SetString(parts[1], parts[2])
-					if err2 != nil {
-						fmt.Println(err.Error())
-						continue
-					}
-					conn.Write([]byte("successful.\n"))
-					continue
-
 				case "GET":
 					if len(parts) < 2 || len(parts) > 2 {
 						conn.Write([]byte("invalid GET format:\n"))
