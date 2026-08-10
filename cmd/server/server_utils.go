@@ -83,3 +83,21 @@ func Fetch(b *db.DB, conn net.Conn) {
 		}
 	}
 }
+
+func Del(parts []string, conn net.Conn, b *db.DB) bool {
+	if len(parts) < 2 || len(parts) > 2 {
+		conn.Write([]byte("usage: DEL <KeyName>\n"))
+	}
+	if _, ok := b.GetInt(parts[1]); ok {
+		b.Del(parts[1])
+		conn.Write([]byte("successfully deleted key\n"))
+	}
+	if _, ok := b.GetString(parts[1]); ok {
+		b.Del(parts[1])
+		conn.Write([]byte("successfuly deleted key\n"))
+		return false
+	}
+	fmt.Fprintln(conn, "key does not exit.", parts[1])
+	return false
+
+}

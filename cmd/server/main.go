@@ -64,21 +64,10 @@ func main() {
 				case "FETCH":
 					Fetch(b, conn)
 				case "DEL":
-					if len(parts) < 2 || len(parts) > 2 {
-						conn.Write([]byte("usage: DEL <KeyName>\n"))
-					}
-					if _, ok := b.GetInt(parts[1]); ok {
-						b.Del(parts[1])
-						conn.Write([]byte("successfully deleted key\n"))
-					}
-					if _, ok := b.GetString(parts[1]); ok {
-						b.Del(parts[1])
-						conn.Write([]byte("successfuly deleted key\n"))
+					ok := Del(parts, conn, b)
+					if !ok {
 						continue
 					}
-					fmt.Fprintln(conn, "key does not exit.", parts[1])
-					continue
-
 				case "HELP":
 					conn.Write([]byte("General usage:\n"))
 					usa.DisplayUsage(conn)
